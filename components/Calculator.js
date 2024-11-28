@@ -5,9 +5,7 @@ import {
   View,
   Text,
   SafeAreaView,
-  Pressable,
   TouchableOpacity,
-  ScrollView,
 } from "react-native";
 
 function Row({ list, setDisplay }) {
@@ -47,7 +45,7 @@ function KeyPadButton({ setDisplay, value }) {
     </TouchableOpacity>
   );
 }
-export default function App() {
+export default function Calculator() {
   const calculatorBtns = [
     [{ key: "C" }, { key: "+/-" }, { key: "%" }, { key: "/" }],
     [{ key: "7" }, { key: "8" }, { key: "9" }, { key: "*" }],
@@ -59,6 +57,7 @@ export default function App() {
   const [stack, setStack] = useState([]);
 
   function setDisplay(val) {
+    let airthmaticOperands = ["/", "*", "-", "+"];
     if (val == "C") {
       setDisplayVal("");
       setStack([]);
@@ -66,15 +65,25 @@ export default function App() {
       if (val == "+/-") {
       } else {
         try {
-          setDisplayVal(eval(displayVal));
+          let calc = eval(displayVal);
+          if (val == "%") calc = calc / 100;
+          setDisplayVal(eval(calc));
         } catch (error) {
           setDisplayVal("Error");
         }
       }
+    } else if (displayVal != "" && airthmaticOperands.includes(val)) {
+      setDisplayVal((prev) => {
+        console.log();
+        if (airthmaticOperands.includes(prev[prev.length - 1])) {
+          let str = prev.substring(0, prev.length - 1) + val;
+          console.log(str);
+          return str;
+        }
+        return prev + val;
+      });
     } else {
-      let operands = ["/", "*", "-", "+"];
-      if (displayVal != "" && !operands.includes(val))
-        setDisplayVal((prev) => prev + val);
+      setDisplayVal((prev) => prev + val);
     }
   }
 

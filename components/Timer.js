@@ -9,17 +9,18 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 
-export default function Demo() {
+export default function Timer() {
   const [display, setDisplay] = useState("");
   const [counter, setCounter] = useState(0);
 
   const [timer, setTimer] = useState(null);
 
   useEffect(() => {
-    let time = [];
-    time[0] = Math.floor(counter / 3600);
-    time[1] = Math.floor((counter % 36000) / 60);
-    time[2] = Math.floor((counter % 3600) % 60);
+    let time = [
+      Math.floor(counter / 3600),
+      Math.floor((counter % 36000) / 60),
+      Math.floor((counter % 3600) % 60),
+    ];
     time.forEach((val, index) => {
       if (val <= 9) {
         time[index] = "0" + val;
@@ -42,6 +43,7 @@ export default function Demo() {
   function resetFunc() {
     clearInterval(timer);
     setCounter(0);
+    setTimer(null);
   }
 
   return (
